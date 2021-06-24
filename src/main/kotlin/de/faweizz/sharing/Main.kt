@@ -34,6 +34,7 @@ fun main() {
     while (true) {
         val newMessages = consumer.poll(Duration.ofSeconds(10))
         newMessages.records(inputTopic).forEach {
+            println("Received (${it.key()},${it.value()}) from $inputTopic, producing to $outputTopic")
             producer.send(ProducerRecord(outputTopic, it.value()))
         }
     }
