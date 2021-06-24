@@ -6,20 +6,24 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import java.time.Duration
 
 fun main() {
-    val clientName = System.getProperty("client-name")
-    val clientSecret = System.getProperty("client-secret")
-    val consumerGroup = System.getProperty("consumer-group")
-    val inputTopic = System.getProperty("input-topic")
-    val outputTopic = System.getProperty("output-topic")
-    val trustStoreLocation = System.getProperty("truststore-location")
-    val trustStorePassword = System.getProperty("truststore-password")
+    val kafkaAddress = System.getenv("KAFKA_ADDRESS") ?: throw Exception("Missing variable KAFKA_ADDRESS")
+    val clientName = System.getenv("CLIENT_NAME") ?: throw Exception("Missing variable CLIENT_NAME")
+    val clientSecret = System.getenv("CLIENT_SECRET") ?: throw Exception("Missing variable CLIENT_SECRET")
+    val consumerGroup = System.getenv("CONSUMER_GROUP") ?: throw Exception("Missing variable CONSUMER_GROUP")
+    val inputTopic = System.getenv("INPUT_TOPIC") ?: throw Exception("Missing variable INPUT_TOPIC")
+    val outputTopic = System.getenv("OUTPUT_TOPIC") ?: throw Exception("Missing variable OUTPUT_TOPIC")
+    val trustStoreLocation =
+        System.getenv("TRUSTSTORE_LOCATION") ?: throw Exception("Missing variable TRUSTSTORE_LOCATION")
+    val trustStorePassword =
+        System.getenv("TRUSTSTORE_PASSWORD") ?: throw Exception("Missing variable TRUSTSTORE_PASSWORD")
 
     val config = Config(
         clientName = clientName,
         clientSecret = clientSecret,
         consumerGroup = consumerGroup,
         trustStoreLocation = trustStoreLocation,
-        trustStorePassword = trustStorePassword
+        trustStorePassword = trustStorePassword,
+        kafkaAddress = kafkaAddress
     )
 
     val consumer = KafkaConsumer<String, String>(config)

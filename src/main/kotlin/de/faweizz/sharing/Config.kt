@@ -8,12 +8,13 @@ class Config(
     clientSecret: String,
     clientName: String,
     trustStoreLocation: String,
-    trustStorePassword: String
+    trustStorePassword: String,
+    kafkaAddress: String
 ) : Properties() {
     init {
         this["client.id"] = InetAddress.getLocalHost().hostName
         this["group.id"] = consumerGroup
-        this.setProperty("bootstrap.servers", "localhost:9092")
+        this.setProperty("bootstrap.servers", kafkaAddress)
         this.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
         this.setProperty("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
         this.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
