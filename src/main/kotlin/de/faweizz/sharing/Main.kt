@@ -26,13 +26,13 @@ fun main() {
         kafkaAddress = kafkaAddress
     )
 
-    val consumer = KafkaConsumer<String, String>(config)
+    val consumer = KafkaConsumer<String, ByteArray>(config)
     consumer.subscribe(listOf(inputTopic))
 
-    val producer = KafkaProducer<String, String>(config)
+    val producer = KafkaProducer<String, ByteArray>(config)
 
     while (true) {
-        val newMessages = consumer.poll(Duration.ofSeconds(10))
+        val newMessages = consumer.poll(Duration.ofMillis(100))
         newMessages.records(inputTopic).forEach {
             println("Received (${it.key()},${it.value()}) from $inputTopic, producing to $outputTopic")
             producer.send(ProducerRecord(outputTopic, it.value()))
